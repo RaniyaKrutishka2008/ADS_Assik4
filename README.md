@@ -70,3 +70,79 @@ Performance Results
 
 F. Reflection
 Working through this assignment significantly deepened my practical understanding of graph data structures. The most challenging yet rewarding part was analyzing exactly why BFS and DFS generate such different traversal paths—watching BFS expand outward uniformly while DFS aggressively pursues a single route to its end. Additionally, I gained a strong appreciation for the memory efficiency of adjacency lists, which only store actual edge connections rather than empty spaces. Finally, it was insightful to see firsthand that despite their vastly different exploration strategies, both algorithms ultimately operate with the same O(V + E) complexity limit.
+
+
+BONUS TASK 
+=============
+
+Graph Algorithms — Java Implementation
+This project implements a weighted undirected graph in Java, supporting Breadth-First Search (BFS), Depth-First Search (DFS), and Dijkstra's Shortest Path algorithm. The graph is backed by an adjacency list and designed to scale across small, medium, and large vertex sets.
+---
+Bonus Task: Dijkstra's Algorithm
+This extension introduces edge weights to the graph infrastructure and implements Dijkstra's algorithm to compute single-source shortest paths.
+----
+Architectural Changes
+To support weighted graphs without breaking backwards compatibility, the existing codebase was refactored as follows:
+
+Edge Class: Upgraded to support a weight field.
+
+Added constructor: Edge(Vertex source, Vertex destination, int weight).
+Retained the original Edge(source, destination) constructor, which forwards to the new one with a default weight = 1.
+
+Graph Class: Internal storage transitioned from an adjacency list of IDs (Map<Integer, List<Integer>>) to full edge objects (Map<Integer, List<Edge>>).
+
+addEdge(from, to) remains functional and defaults to a weight of 1.
+Added an overloaded addEdge(from, to, weight) method for explicit edge weighting. As the graph is undirected, symmetric Edge instances are added to both adjacency lists.
+Legacy Traversal Preservation: Both BFS and DFS remain fully functional without logic changes — they now iterate over Edge objects and call edge.getDest() instead of accessing vertices directly.
+
+------
+Dijkstra Implementation Details
+
+Method Signature: void dijkstra(int start)
+Constraints & Assumptions: Vertex IDs are strictly bounded from 0 to n − 1, allowing direct mapping to array indices.
+
+
+Execution Flow
+Instead of using a priority queue (min-heap), the algorithm relies on array-based tracking to fit simple loop structures:
+
+Initialize a dist[] array of size n filled with Integer.MAX_VALUE, setting dist[start] = 0.
+Initialize a boolean visited[] array of size n to false.
+Loop n times:
+
+Scan: Find the unvisited vertex u with the minimum value in dist[]. If no reachable, unvisited vertex remains, break early.
+Visit: Mark u as visited.
+Relax: For every outgoing edge from u to neighbor v, if dist[u] + weight < dist[v], update dist[v] = dist[u] + weight.
+
+
+Print the finalized shortest-path distances.
+
+
+Complexity Note: By choosing a linear scan over a Min-Heap/Priority Queue, the time complexity scales at O(V²) rather than O((V + E)logV). While sub-optimal for large graphs, this approach eliminates heap allocation overhead and runs highly efficiently for small vertex sets.
+
+-----
+
+Weighted Graph Layout
+The implementation was validated using the following graph structure (small graph, 10 vertices):
+![img_4.png](img_4.png)
+
+----
+
+Data Structures Used
+
+int[] dist  - Stores shortest known distance from start to each vertex; initialised to Integer.MAX_VALUE
+boolean[] visited- Tracks which vertices have been permanently finalised
+Map<Integer, List<Edge>> - Adjacency list storing weighted edge objects per vertex
+
+----
+
+Project Structure 
+
+Vertix.java - Represents a graph vertex with an integer ID 
+
+Edge.java - Represents a weighted undirected edge between two vertices
+
+Graph.java - Graph structure using adjacency list; supports BFS, DFS, Dijkstra
+
+Experiment.java - Runs and measures traversal performance across graph sizes
+
+Main.java - Entry point — builds small/medium/large graphs and runs all algorithms

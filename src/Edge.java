@@ -1,10 +1,12 @@
 class Edge {
     private Vertex src;
     private Vertex dest;
+    private int weight;
 
-    public Edge(Vertex src, Vertex dest) {
+    public Edge(Vertex src, Vertex dest, int weight) {
         this.src = src;
         this.dest = dest;
+        this.weight = weight;
     }
 
     public Vertex getSrc() {
@@ -15,8 +17,12 @@ class Edge {
         return dest;
     }
 
+    public int getWeight() {
+        return weight;
+    }
+
     @Override
     public String toString() {
-        return src + " -> " + dest;
+        return src + " -(" + weight + ")-> " + dest;
     }
 }

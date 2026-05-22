@@ -1,5 +1,4 @@
 class Experiment {
-
     private long[] bfsTimes;
     private long[] dfsTimes;
     private int[] sizes = {10, 30, 100};
@@ -19,10 +18,8 @@ class Experiment {
     public void runMultipleTests(Graph[] graphs) {
         bfsTimes = new long[graphs.length];
         dfsTimes = new long[graphs.length];
-
         for (int i = 0; i < graphs.length; i++) {
             System.out.println("\n[*] Testing graph with " + sizes[i] + " vertices...");
-
             long startTime = System.nanoTime();
             graphs[i].bfs(0);
             bfsTimes[i] = System.nanoTime() - startTime;

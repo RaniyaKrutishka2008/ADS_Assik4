@@ -1,5 +1,3 @@
-import java.util.*;
-
 class Vertex {
     private int id;
 
